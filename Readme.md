@@ -1,4 +1,4 @@
-# send-metrics
+# send-timings
 
 This module enables you to just send the navigation timing API available info to a configured url.
 
@@ -13,23 +13,23 @@ npm i @magnus/send-metrics
 Use it:
 
 ```javascript
-import Metric from "@magnus/send-metrics";
+import Timings from "@magnus/send-timings";
 
 const url = "/some/path/somewhere/not/cached";
 
-const metric = Metric(url);
+const timingsSender = Timings(url);
 
 // later in the code
-metric.sendTimings();
+timingsSender.sendTimings();
 
 // or
-metric.sendMeasures();
+timingsSender.sendMeasures();
 
 // or if you have mark
-metric.sendMarks();
+timingsSender.sendMarks();
 
 // or if you have existing measure:
-metric.sendCustomMeasures();
+timingsSender.sendCustomMeasures();
 ```
 
 ## Available methods
@@ -51,3 +51,28 @@ Takes all marks in `window.performance.timing.getEntriesByType('mark')` and thei
 ### sendMeasures
 
 Takes all measures in `window.performance.timing.getEntriesByType('measure')` and their respective`duration`.
+
+## Collecting the metrics
+
+This module only sends the data to a remote url by adding an image to the body of the current document. You'll need to implement a collector.
+
+Obviously, the target url must not be cached, although it probably won't be because of the complexity of the query string built.
+
+A collector can be a dedicated location on you nginx server or an application server, you choose.
+
+I start with an special nginx configured as follows:
+
+```
+http {
+  ...
+  log_format timing '"$http_referer" $time_iso8601 "$http_x_forwarded_for" "$request" "$http_user_agent"';
+  access_log /var/log/nginx/access.log timing
+  ...
+
+  location =/no-cache {
+    return 204;
+  }
+}
+```
+
+You can do that with the nginx docker image as a basis.
