@@ -25,8 +25,8 @@ const window = {
 test("sendTiming - does not work when timing API does not work", assert => {
   const doc = { createElement: sinon.spy() };
 
-  const Timings = Timings(url, doc, {});
-  Timings.sendTiming();
+  const timings = Timings(url, doc, {});
+  timings.sendTiming();
 
   assert.false(doc.createElement.called);
   assert.end();
@@ -41,8 +41,8 @@ test("sendTiming - creates an image", assert => {
     }
   };
 
-  const Timings = Timings(url, doc, window);
-  Timings.sendTiming();
+  const timings = Timings(url, doc, window);
+  timings.sendTiming();
 
   assert.true(doc.body.appendChild.called);
   assert.equal(imgElement.src, `${url}?timing&navigationStart=10&testA=48`);
@@ -52,8 +52,8 @@ test("sendTiming - creates an image", assert => {
 test("sendMeasures - does not work when timing API does not work", assert => {
   const doc = { createElement: sinon.spy() };
 
-  const Timings = Timings(url, doc, {});
-  Timings.sendMeasures();
+  const timings = Timings(url, doc, {});
+  timings.sendMeasures();
 
   assert.false(doc.createElement.called);
   assert.end();
@@ -68,8 +68,8 @@ test("sendMeasures - creates an image", assert => {
     }
   };
 
-  const Timings = Timings(url, doc, window);
-  Timings.sendMeasures();
+  const timings = Timings(url, doc, window);
+  timings.sendMeasures();
   assert.true(doc.body.appendChild.called);
   assert.equal(imgElement.src, `${url}?measures&navigationStart=10&testA=38`);
   assert.end();
@@ -78,8 +78,8 @@ test("sendMeasures - creates an image", assert => {
 test("sendMarks - does not work when timing API does not work", assert => {
   const doc = { createElement: sinon.spy() };
 
-  const Timings = Timings(url, doc, {});
-  Timings.sendMarks();
+  const timings = Timings(url, doc, {});
+  timings.sendMarks();
 
   assert.false(doc.createElement.called);
   assert.end();
@@ -107,8 +107,8 @@ test("sendMarks - creates an image", assert => {
       ])
     }
   };
-  const Timings = Timings(url, doc, win);
-  Timings.sendMarks();
+  const timings = Timings(url, doc, win);
+  timings.sendMarks();
 
   assert.true(doc.body.appendChild.called);
   assert.equal(imgElement.src, `${url}?marks&testA=1234&testB=4321`);
@@ -118,8 +118,8 @@ test("sendMarks - creates an image", assert => {
 test("sendCustomMeasures - does not work when timing API does not work", assert => {
   const doc = { createElement: sinon.spy() };
 
-  const Timings = Timings(url, doc, {});
-  Timings.sendCustomMeasures();
+  const timings = Timings(url, doc, {});
+  timings.sendCustomMeasures();
 
   assert.false(doc.createElement.called);
   assert.end();
@@ -148,8 +148,8 @@ test("sendCustomMeasures - creates an image", assert => {
     }
   };
 
-  const Timings = Timings(url, doc, win);
-  Timings.sendCustomMeasures();
+  const timings = Timings(url, doc, win);
+  timings.sendCustomMeasures();
 
   assert.true(doc.body.appendChild.called);
   assert.equal(imgElement.src, `${url}?customMeasures&testA=1234&testB=4321`);

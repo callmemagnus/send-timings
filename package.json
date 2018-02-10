@@ -9,7 +9,7 @@
     "build": "run-p build:*",
     "build:es5": "babel src -d lib",
     "build:es6": "cp-cli src/timings.js lib/timings.es6.js ",
-    "test": "babel-tape-runner src/*.spec.js",
+    "test": "babel-tape-runner specs/*.spec.js",
     "prepare": "run-s clean build"
   },
   "registry": {

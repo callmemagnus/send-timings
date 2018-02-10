@@ -22,7 +22,7 @@ const extract = timings => {
   return arr;
 };
 
-const Metrics = (url, doc = document, win = window) => {
+const Timings = (url, doc = document, win = window) => {
   const performance = "performance" in win ? win.performance : null;
   return {
     // user must know when site is ready to send data
@@ -84,4 +84,4 @@ const Metrics = (url, doc = document, win = window) => {
   };
 };
 
-export default Metrics;
+export default Timings;
