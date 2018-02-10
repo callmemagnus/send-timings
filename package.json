@@ -1,0 +1,25 @@
+{
+  "name": "@magnus/send-metrics",
+  "version": "0.0.1",
+  "description": "Tool to send navigation timing API content to custom endpoint",
+  "main": "src/metrics.js",
+  "scripts": {
+    "test": "babel-tape-runner src/*.spec.js"
+  },
+  "registry": {
+    "type": "git",
+    "url": "https://github.com/callmemagnus/send-metrics.git"
+  },
+  "author": "Magnus Anderssen <magnus@magooweb.com>",
+  "keywords": [
+    "performance",
+    "timing"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-env": "1.6.1",
+    "babel-tape-runner": "2.0.1",
+    "sinon": "4.2.2",
+    "tape": "4.8.0"
+  }
+}
