@@ -1,6 +1,6 @@
 {
   "name": "@magnus/send-timings",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tool to send navigation timing API content to custom endpoint",
   "main": "lib/timings.js",
   "module": "lib/timings.es6.js",
