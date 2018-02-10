@@ -1,14 +1,20 @@
 {
-  "name": "@magnus/send-metrics",
+  "name": "@magnus/send-timings",
   "version": "0.0.1",
   "description": "Tool to send navigation timing API content to custom endpoint",
-  "main": "src/metrics.js",
+  "main": "lib/timings.js",
+  "module": "lib/timings.es6.js",
   "scripts": {
-    "test": "babel-tape-runner src/*.spec.js"
+    "clean": "rimraf lib",
+    "build": "run-p build:*",
+    "build:es5": "babel src -d lib",
+    "build:es6": "cp-cli src/timings.js lib/timings.es6.js ",
+    "test": "babel-tape-runner src/*.spec.js",
+    "prepare": "run-s clean build"
   },
   "registry": {
     "type": "git",
-    "url": "https://github.com/callmemagnus/send-metrics.git"
+    "url": "https://github.com/callmemagnus/send-timings.git"
   },
   "author": "Magnus Anderssen <magnus@magooweb.com>",
   "keywords": [
@@ -17,8 +23,12 @@
   ],
   "license": "ISC",
   "devDependencies": {
+    "babel-cli": "6.26.0",
     "babel-preset-env": "1.6.1",
     "babel-tape-runner": "2.0.1",
+    "cp-cli": "1.1.0",
+    "npm-run-all": "4.1.2",
+    "rimraf": "2.6.2",
     "sinon": "4.2.2",
     "tape": "4.8.0"
   }
