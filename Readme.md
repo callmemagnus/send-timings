@@ -46,11 +46,17 @@ Takes all numeric values in `ŵindow.performance.timing` and substract the value
 
 ### sendMarks
 
-Takes all marks in `window.performance.timing.getEntriesByType('mark')` and their respective`startTime`.
+Takes all marks in `window.performance.timing.getEntriesByType('mark')` and their respective `startTime`.
 
 ### sendMeasures
 
-Takes all measures in `window.performance.timing.getEntriesByType('measure')` and their respective`duration`.
+Takes all measures in `window.performance.timing.getEntriesByType('measure')` and their respective `duration`.
+
+### setCurrentPage
+
+Enabled to chage the page value that is submitted, see below. Useful for single page applications.
+
+Beware that using `sendTimings` values will relate to first page arrival.
 
 ## Collecting the metrics
 
@@ -70,9 +76,42 @@ http {
   ...
 
   location =/no-cache {
-    return 204;
+    add_header Cache-Control no-cache;
+    return 200;
   }
 }
 ```
 
 You can do that with the nginx docker image as a basis.
+
+The received url will be like, on the page `https://example.local/path/to/item/?test=tata`:
+
+```
+<url>?measures&page=https%3A%2F%2Fexample.local%2Fpath%2Fto%2item%2F%3Ftest%3Dtata&navigationStart=1610189690760&unloadEventStart=574&unloadEventEnd=580&fetchStart=2&domainLookupStart=420&domainLookupEnd=424&connectStart=425&connectEnd=505&secureConnectionStart=446&requestStart=505&responseStart=537&responseEnd=538&domLoading=574&domInteractive=639&domContentLoadedEventStart=664&domContentLoadedEventEnd=675&domComplete=761&loadEventStart=761&loadEventEnd=761
+```
+
+By default:
+
+```
+measures
+page=https%3A%2F%2Fexample.local%2Fpath%2Fto%2item%2F%3Ftest%3Dtata
+navigationStart=1610189690760
+unloadEventStart=574
+unloadEventEnd=580
+fetchStart=2
+domainLookupStart=420
+domainLookupEnd=424
+connectStart=425
+connectEnd=505
+secureConnectionStart=446
+requestStart=505
+responseStart=537
+responseEnd=538
+domLoading=574
+domInteractive=639
+domContentLoadedEventStart=664
+domContentLoadedEventEnd=675
+domComplete=761
+loadEventStart=761
+loadEventEnd=761
+```

@@ -1,16 +1,16 @@
 /* global document, window */
 
-const addImg = (url, doc = document) => {
+function addImg(url, doc = document) {
   const img = doc.createElement("img");
-  img.onload = () => doc.body.removeChild(img);
+  img.onload = () => setTimeout(() => doc.body.removeChild(img), 10);
   img.onerror = img.onload;
   img.height = "1px";
   img.width = "1px";
   img.src = url;
   doc.body.appendChild(img);
-};
+}
 
-const extract = timings => {
+function extract(timings) {
   const arr = [];
   for (const key in timings) {
     if (typeof timings[key] === "number") {
@@ -20,11 +20,15 @@ const extract = timings => {
   }
 
   return arr;
-};
+}
 
-const Timings = (url, doc = document, win = window) => {
+function Timings(url, doc = document, win = window) {
   const performance = "performance" in win ? win.performance : null;
+  let currentPage = win.encodeURIComponent(doc.location);
   return {
+    setCurrentPage: (newCurrentPage) => {
+      currentPage = win.encodeURIComponent(newCurrentPage);
+    },
     // user must know when site is ready to send data
     sendTiming: () => {
       if (!performance) return;
@@ -35,7 +39,7 @@ const Timings = (url, doc = document, win = window) => {
         return `${acc}${key}=${value}`;
       }, "");
 
-      addImg(`${url}?timing&${qs}`, doc);
+      addImg(`${url}?timing&page=${currentPage}&${qs}`, doc);
     },
     sendMeasures: () => {
       if (!performance) return;
@@ -55,7 +59,7 @@ const Timings = (url, doc = document, win = window) => {
         return (acc += `${key}=${diff}`);
       }, "");
 
-      addImg(`${url}?measures&${qs}`, doc);
+      addImg(`${url}?measures&page=${currentPage}&${qs}`, doc);
     },
     // marks are used for custom events
     sendMarks: () => {
@@ -63,11 +67,14 @@ const Timings = (url, doc = document, win = window) => {
       const marks = performance.getEntriesByType("mark");
       if (!marks.length) return;
 
-      const qs = marks.reduce((acc, { name, startTime }) => {
-        acc += acc.length ? "&" : "";
-        return `${acc}${name}=${startTime}`;
-      }, performance.timeOrigin ? `timeOrigin=${performance.timeOrigin}` : "");
-      addImg(`${url}?marks&${qs}`, doc);
+      const qs = marks.reduce(
+        (acc, { name, startTime }) => {
+          acc += acc.length ? "&" : "";
+          return `${acc}${name}=${startTime}`;
+        },
+        performance.timeOrigin ? `timeOrigin=${performance.timeOrigin}` : ""
+      );
+      addImg(`${url}?marks&page=${currentPage}&${qs}`, doc);
     },
     //
     sendCustomMeasures: () => {
@@ -79,9 +86,9 @@ const Timings = (url, doc = document, win = window) => {
         acc += acc.length ? "&" : "";
         return `${acc}${name}=${duration}`;
       }, "");
-      addImg(`${url}?customMeasures&${qs}`, doc);
-    }
+      addImg(`${url}?customMeasures&page=${currentPage}&${qs}`, doc);
+    },
   };
-};
+}
 
 export default Timings;
